@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 # Create your models here.
 class Contact(models.Model):
@@ -9,3 +10,7 @@ class Contact(models.Model):
     initials = models.CharField(max_length=2)
     register = models.CharField(max_length=1)
     selected = models.BooleanField(default=False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f'({self.id}) {self.name}'

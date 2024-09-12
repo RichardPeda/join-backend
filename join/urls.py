@@ -16,7 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from contacts.views import ContactView
+from taskitem.views import TaskitemView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('contacts/', ContactView.as_view()),
+    path('taskitems/', TaskitemView.as_view()),
 ]
