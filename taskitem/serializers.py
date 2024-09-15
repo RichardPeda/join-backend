@@ -15,4 +15,4 @@ class TaskitemSerializer(serializers.ModelSerializer):
         model = TaskItem
         # fields = '__all__',
         # fields = ['id','contacts' 'rel_task']
-        fields = ['id','title','description','priority','status','contacts', 'related_task']
+        fields = ['id','title','description','priority','category','due_date','status','contacts', 'related_task']

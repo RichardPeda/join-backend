@@ -1,10 +1,11 @@
 from django.db import models
 from contacts.models import Contact
+from datetime import date
 
 
 # Choises for priority
-URGENT = 'URG'
-MEDIUM = 'MED'
+URGENT = 'URGENT'
+MEDIUM = 'MEDIUM'
 LOW = 'LOW'
 
 # Choises for status
@@ -23,6 +24,8 @@ class TaskItem(models.Model):
     priority = models.CharField(max_length=10, choices=PRIORITY_CHOISES, default=MEDIUM)
     status = models.CharField(max_length=13, choices=STATUS_CHOISES, default=TD)
     contacts = models.ManyToManyField(Contact, blank=True)
+    due_date = models.DateField(default=date.today)
+    category = models.CharField(max_length=20)
 
 class Subtask_item(models.Model):
      title = models.CharField(max_length=30, blank=False)
