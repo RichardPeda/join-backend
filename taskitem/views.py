@@ -13,13 +13,19 @@ class TaskitemView(APIView):
         return contacts
     def get_object(self, id):
         return get_object_or_404(self.get_queryset(), id=id)
-    def get(self, request, *args, **kwargs):
-        try:
-            id = self.kwargs["id"]
+    def get(self, request, id=None, *args, **kwargs):
+        
+        # id = self.kwargs["id"]
+        id = id or request.query_params.get('id')
+        print(id)
+        if id:
             serializer = TaskitemSerializer(self.get_object(id))
-        except:
-            print(self)
+
+        else: 
+        
+            print('except')
             serializer = TaskitemSerializer(self.get_queryset(), many=True)
+            # serializer = {'data': 'no item found'}
 
         return Response(serializer.data)
     

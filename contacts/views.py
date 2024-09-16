@@ -14,10 +14,10 @@ class ContactView(APIView):
     def get_object(self, id):
         return get_object_or_404(self.get_queryset(), id=id)
     def get(self, request, *args, **kwargs):
-        try:
-            id = self.kwargs["id"]
+        id = self.kwargs["id"]
+        if id:
             serializer = ContactSerializer(self.get_object(id))
-        except:
+        else:
             print(self)
             serializer = ContactSerializer(self.get_queryset(), many=True)
 

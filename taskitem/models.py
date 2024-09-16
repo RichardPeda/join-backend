@@ -14,8 +14,13 @@ IP = 'INPROGRESS'
 AF = 'AWAITFEEDBACK'
 DN = 'DONE'
 
+#Choises for category
+TECHNICAL_TASK = 'Technical Task'
+USER_STORY = 'User Story'
+
 PRIORITY_CHOISES = [(URGENT, 'urgent'), (MEDIUM, 'medium'), (LOW, 'low') ]
 STATUS_CHOISES = [(TD, 'Todo'), (IP, 'inProgress'), (AF, 'awaitFeedback') ,(DN, 'done') ]
+CATEGORY_CHOISES =[(TECHNICAL_TASK, 'Technical Task'), (USER_STORY, 'User Story')]
 
 
 class TaskItem(models.Model):
@@ -25,10 +30,10 @@ class TaskItem(models.Model):
     status = models.CharField(max_length=13, choices=STATUS_CHOISES, default=TD)
     contacts = models.ManyToManyField(Contact, blank=True)
     due_date = models.DateField(default=date.today)
-    category = models.CharField(max_length=20)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOISES, default=None)
 
-class Subtask_item(models.Model):
+class SubtaskItem(models.Model):
      title = models.CharField(max_length=30, blank=False)
      checked = models.BooleanField(default=False)
-     rel_task = models.ForeignKey(TaskItem, on_delete=models.CASCADE)
+     rel_task = models.ForeignKey(TaskItem, on_delete=models.CASCADE, related_name='subtask_item_set')
 

@@ -5,13 +5,18 @@ from contacts.views import ContactView
 from taskitem.views import TaskitemView
 from login.views import LoginView
 from rest_framework import routers
+from rest_framework.authtoken.views import obtain_auth_token
+
+from users.views import SignupAPIView
 
 urlpatterns = [
     # path('', include(router.urls)),
     path('admin/', admin.site.urls),
-    path('login/', LoginView.as_view()),
-    path('contacts/', ContactView.as_view()),
-    path('contacts/<int:id>/', ContactView.as_view()),
-    path('taskitems/', TaskitemView.as_view()),
-    path('taskitems/<int:id>/', TaskitemView.as_view()),
+    path('api/signup/', SignupAPIView.as_view(), name='signup_api_view'),
+    path('api/login/', obtain_auth_token, name='login_api_view'),
+    # path('login/', LoginView.as_view()),
+    path('api/contacts/', ContactView.as_view()),
+    path('api/contacts/<int:id>/', ContactView.as_view()),
+    path('api/taskitems/', TaskitemView.as_view()),
+    path('api/taskitems/<int:id>/', TaskitemView.as_view()),
 ]
