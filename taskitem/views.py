@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from rest_framework.authtoken.views import APIView, ObtainAuthToken, Response, Token
-
+from rest_framework import status
 from taskitem.serializers import TaskitemSerializer
 from .models import TaskItem
 
@@ -11,21 +11,21 @@ class TaskitemView(APIView):
     def get_queryset(self, *args, **kwargs):
         contacts = TaskItem.objects.all()
         return contacts
-    def get_object(self, id):
-        return get_object_or_404(self.get_queryset(), id=id)
-    def get(self, request, id=None, *args, **kwargs):
-        
-        # id = self.kwargs["id"]
-        id = id or request.query_params.get('id')
-        print(id)
-        if id:
-            serializer = TaskitemSerializer(self.get_object(id))
-
-        else: 
-        
-            print('except')
+   
+    def get(self, request, *args, **kwargs):
             serializer = TaskitemSerializer(self.get_queryset(), many=True)
-            # serializer = {'data': 'no item found'}
+            if serializer.data:
+                return Response(serializer.data)
+            else:
+                return Response({'status': 'no item found'}, status=status.HTTP_404_NOT_FOUND)
 
-        return Response(serializer.data)
-    
+class TaskitemDetailView(APIView):
+    def get(self, request, id=None):
+        print(id)
+        task = TaskItem.objects.filter(id=id)
+        if task:
+            task_serializer = TaskitemSerializer(task, many=True)
+            return Response(task_serializer.data)
+        else:
+            # return Response({'error': 'no item'})
+            return Response({'status': 'no item found'}, status=status.HTTP_404_NOT_FOUND)
