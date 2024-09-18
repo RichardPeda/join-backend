@@ -3,21 +3,27 @@ from rest_framework.authtoken.views import APIView, ObtainAuthToken, Response, T
 from rest_framework import status
 from taskitem.serializers import TaskitemSerializer
 from .models import TaskItem
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
-class TaskitemView(APIView):
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def TaskitemView(request):
 
-    permission_classes = []
-    def get_queryset(self, *args, **kwargs):
-        contacts = TaskItem.objects.all()
-        return contacts
+    
+    
+    taskitems = TaskItem.objects.all()
+
    
-    def get(self, request, *args, **kwargs):
-            serializer = TaskitemSerializer(self.get_queryset(), many=True)
-            if serializer.data:
-                return Response(serializer.data)
-            else:
-                return Response({'status': 'no item found'}, status=status.HTTP_404_NOT_FOUND)
+    # def get(self, request, *args, **kwargs):
+    serializer = TaskitemSerializer(taskitems, many=True)
+    if serializer.data:
+        return Response(serializer.data)
+    else:
+        return Response({'status': 'no item found'}, status=status.HTTP_404_NOT_FOUND)
 
 class TaskitemDetailView(APIView):
     def get(self, request, id=None):
