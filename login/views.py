@@ -3,6 +3,8 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 
+from contacts.utils import create_default_contacts
+
 
 # Create your views here.
 class LoginView(ObtainAuthToken):
@@ -12,6 +14,7 @@ class LoginView(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
+        create_default_contacts(user=user.id)
         return Response({
             'token': token.key,
             'user_id': user.pk,
