@@ -4,7 +4,7 @@ from rest_framework import status
 from taskitem.serializers import TaskitemSerializer
 from .models import TaskItem
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
@@ -13,12 +13,7 @@ from rest_framework.permissions import IsAuthenticated
 @permission_classes([IsAuthenticated])
 def TaskitemView(request):
 
-    
-    
     taskitems = TaskItem.objects.all()
-
-   
-    # def get(self, request, *args, **kwargs):
     serializer = TaskitemSerializer(taskitems, many=True)
     if serializer.data:
         return Response(serializer.data)

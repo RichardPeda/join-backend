@@ -15,8 +15,8 @@ urlpatterns = [
     path('api/signup/', SignupAPIView.as_view(), name='signup_api_view'),
     # path('api/login/', obtain_auth_token, name='login_api_view'),
     path('api/login/', LoginView.as_view()),
-    path('api/contacts/', ContactView.as_view()),
-    path('api/contacts/<int:id>/', ContactView.as_view()),
+    path('api/contacts/', ContactView),
+    path('api/contacts/<int:id>/', ContactView),
     path('api/taskitems/', TaskitemView),
     path('api/taskitems/<int:id>/', TaskitemDetailView.as_view()),
 ]
