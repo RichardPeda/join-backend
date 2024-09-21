@@ -15,7 +15,7 @@ from time import sleep
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def ContactView(request):
+def get_contacts(request):
     contacts = Contact.objects.all()
     # sleep(5)
     serializer = ContactSerializer(contacts, many=True)
@@ -25,17 +25,50 @@ def ContactView(request):
         return Response({'status': 'no item found'}, status=status.HTTP_404_NOT_FOUND)
 
 
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def create_contact(request):
+    print(request.data)
+    serializer = ContactSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET', 'PUT', 'DELETE'])
+# @authentication_classes([TokenAuthentication])
+# @permission_classes([IsAuthenticated])
+def contact_detail(request, pk):
+    try:
+        contact = Contact.objects.get(pk=pk)
+    except Contact.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    if request.method == 'GET':
+        serializer = ContactSerializer(contact)
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        serializer = ContactSerializer(contact, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'DELETE':
+        contact.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 
-    #     # contacts = Contact.objects.all()
-    #     # serializer = ContactSerializer(contacts, many=True)
-    #     # return Response(serializer.data)
-    # def patch(self, request):
-    #     print(request.data['id'])
-    #     contact = Contact.objects.get(id= request.data['id'])
-    #     contact.name = request.data['name']
-    #     contact.save()
-    #     print(contact)
-    #     return Response(request.data)
+
+
+    print(request.data)
+    serializer = ContactSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
         
