@@ -45,6 +45,7 @@ def task_detail(request, pk):
         serializer = TaskitemSerializer(contact)
         return Response(serializer.data)
     elif request.method == 'PUT':
+        print(request.data['due_date'])
         serializer = TaskitemSerializer(contact, data=request.data)
         if serializer.is_valid():
             serializer.save()

@@ -29,7 +29,7 @@ class TaskItem(models.Model):
     priority = models.CharField(max_length=10, choices=PRIORITY_CHOISES, default=MEDIUM)
     status = models.CharField(max_length=13, choices=STATUS_CHOISES, default=TD)
     contacts = models.ManyToManyField(Contact, blank=True)
-    due_date = models.DateField(default=date.today)
+    due_date = models.DateField(default=date.today, editable=True)
     category = models.CharField(max_length=20, choices=CATEGORY_CHOISES, default=None)
 
 class SubtaskItem(models.Model):
