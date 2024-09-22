@@ -9,7 +9,7 @@ class SubtaskSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class TaskitemSerializer(serializers.ModelSerializer):
-    contacts = ContactSerializer(many=True, read_only=True)
+    contacts = ContactSerializer(many=True)
     related_task = SubtaskSerializer(source='subtask_item_set', many=True)
     class Meta:
         model = TaskItem

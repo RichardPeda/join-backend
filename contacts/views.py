@@ -37,8 +37,8 @@ def create_contact(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def contact_detail(request, pk):
     try:
         contact = Contact.objects.get(pk=pk)
@@ -57,10 +57,6 @@ def contact_detail(request, pk):
     elif request.method == 'DELETE':
         contact.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-
-
 
     print(request.data)
     serializer = ContactSerializer(data=request.data)

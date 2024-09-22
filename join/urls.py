@@ -2,7 +2,7 @@
 from django.contrib import admin
 from django.urls import include, path
 from contacts.views import contact_detail, create_contact, get_contacts
-from taskitem.views import TaskitemDetailView, TaskitemView
+from taskitem.views import TaskitemDetailView, create_task, get_tasks, task_detail
 from login.views import LoginView
 from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
@@ -19,6 +19,8 @@ urlpatterns = [
     path('api/contacts/create/', create_contact, name='create_contact'),
     path('api/contacts/<int:pk>/', contact_detail, name='contact_detail'),
     # path('api/contacts/<int:id>/', ContactView),
-    path('api/taskitems/', TaskitemView),
-    path('api/taskitems/<int:id>/', TaskitemDetailView.as_view()),
+    path('api/taskitems/', get_tasks, name='get_tasks'),
+    path('api/taskitems/create/', create_task, name='create_task'),
+    # path('api/taskitems/<int:id>/', TaskitemDetailView.as_view()),
+    path('api/taskitems/<int:pk>/', task_detail, name='task_detail'),
 ]

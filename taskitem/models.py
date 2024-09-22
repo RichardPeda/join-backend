@@ -4,22 +4,22 @@ from datetime import date
 
 
 # Choises for priority
-URGENT = 'URGENT'
-MEDIUM = 'MEDIUM'
-LOW = 'LOW'
+URGENT = 'urgent'
+MEDIUM = 'medium'
+LOW = 'low'
 
 # Choises for status
-TD = 'TODO'
-IP = 'INPROGRESS'
-AF = 'AWAITFEEDBACK'
-DN = 'DONE'
+TD = 'toDo'
+IP = 'inProgress'
+AF = 'awaitFeedback'
+DN = 'done'
 
 #Choises for category
 TECHNICAL_TASK = 'Technical Task'
 USER_STORY = 'User Story'
 
 PRIORITY_CHOISES = [(URGENT, 'urgent'), (MEDIUM, 'medium'), (LOW, 'low') ]
-STATUS_CHOISES = [(TD, 'Todo'), (IP, 'inProgress'), (AF, 'awaitFeedback') ,(DN, 'done') ]
+STATUS_CHOISES = [(TD, 'toDo'), (IP, 'inProgress'), (AF, 'awaitFeedback') ,(DN, 'done') ]
 CATEGORY_CHOISES =[(TECHNICAL_TASK, 'Technical Task'), (USER_STORY, 'User Story')]
 
 
