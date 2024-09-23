@@ -13,8 +13,8 @@ from time import sleep
  
 
 @api_view(['GET'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([TokenAuthentication])
+# @permission_classes([IsAuthenticated])
 def get_contacts(request):
     contacts = Contact.objects.all()
     # sleep(5)
@@ -58,7 +58,6 @@ def contact_detail(request, pk):
         contact.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    print(request.data)
     serializer = ContactSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()

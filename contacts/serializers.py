@@ -14,7 +14,8 @@ class ContactSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Contact
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ['selected']
 
     # def create(self, validated_data):
     #     contact = Contact.objects.get_or_create(**validated_data)
