@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render
 from rest_framework.authtoken.views import APIView, ObtainAuthToken, Response, Token
 from rest_framework import status
 from taskitem.serializers import SubtaskSerializer, TaskitemSerializer
-from .models import TaskItem
+from .models import SubtaskItem, TaskItem
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -90,14 +90,38 @@ def create_subtask(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['PUT'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def check_subtask(request, pk):
+    print(request.data)
+    try:
+        subtask = SubtaskItem.objects.get(pk=pk)
+    except SubtaskItem.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
-class TaskitemDetailView(APIView):
-    def get(self, request, id=None):
-        print(id)
-        task = TaskItem.objects.filter(id=id)
-        if task:
-            task_serializer = TaskitemSerializer(task, many=True)
-            return Response(task_serializer.data)
-        else:
-            # return Response({'error': 'no item'})
-            return Response({'status': 'no item found'}, status=status.HTTP_404_NOT_FOUND)
+    if request.method == 'PUT':
+        serializer = SubtaskSerializer(subtask, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+
+
+
+# class TaskitemDetailView(APIView):
+#     def get(self, request, id=None):
+#         print(id)
+#         task = TaskItem.objects.filter(id=id)
+#         if task:
+#             task_serializer = TaskitemSerializer(task, many=True)
+#             return Response(task_serializer.data)
+#         else:
+#             # return Response({'error': 'no item'})
+#             return Response({'status': 'no item found'}, status=status.HTTP_404_NOT_FOUND)
