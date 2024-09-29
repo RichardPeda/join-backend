@@ -7,17 +7,17 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-
-
-from time import sleep
  
 
 @api_view(['GET'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def get_contacts(request):
+    """
+    *This function returns all existing contacts when a get request is sent.*
+    *If no contacts are found the function returns a 404 error.*
+    """
     contacts = Contact.objects.all()
-    # sleep(5)
     serializer = ContactSerializer(contacts, many=True)
     if serializer.data:
         return Response(serializer.data)
@@ -29,6 +29,11 @@ def get_contacts(request):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def create_contact(request):
+    """
+    *This function creates a new contact when a post request is sent.*
+    *If the contact is successfully created, the function returns a 201 status.*
+    *If the contact clouldn´t be created, the function returns a 400 error.*
+    """
     print(request.data)
     serializer = ContactSerializer(data=request.data)
     if serializer.is_valid():
@@ -40,6 +45,12 @@ def create_contact(request):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def contact_detail(request, pk):
+    """
+    *This function handles a get, put or delete request on a contact with a given primary key.*
+    *A get request returns the contact with the primary key.*
+    *A put request updates the contact and returns it.*
+    *A delete request deletes the contact and returns a 204 status.*
+    """
     try:
         contact = Contact.objects.get(pk=pk)
     except Contact.DoesNotExist:

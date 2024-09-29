@@ -9,6 +9,10 @@ from contacts.utils import create_default_contacts
 # Create your views here.
 class LoginView(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
+        """
+        *This function handles a post request for login of a registerd user.*
+        *A post request returns a token, user id, email and name when the user exists.*
+        """
         serializer = self.serializer_class(data=request.data,
                                            context={'request': request})
         serializer.is_valid(raise_exception=True)

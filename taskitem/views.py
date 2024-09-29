@@ -9,10 +9,13 @@ from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
 @api_view(['GET'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def get_tasks(request):
-
+    """
+    *This function returns all existing tasks.*
+    *A get request returns all task when they exists, otherwise a 404 error is returned.*
+    """
     taskitems = TaskItem.objects.all()
     serializer = TaskitemSerializer(taskitems, many=True)
     if serializer.data:
@@ -24,6 +27,11 @@ def get_tasks(request):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def create_task(request):
+    """
+    *This function creates a new task.*
+    *A post request creates a new task and returns a the data and a 204 status.*
+    *When the task couldn´t be created a 400 status is returned.*
+    """
     print(request.data)
     serializer = TaskitemSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
@@ -32,9 +40,15 @@ def create_task(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def task_detail(request, pk):
+    """
+    *This function returns, update or delete a task with a primary key.*
+    *A get request returns a task when found, otherwise a 404 error*
+    *A put request updates a task and returns the data when the data is valid, otherwise a 400 error.*
+    *A delete request deletes a task and returns a 204 status.*
+    """
     try:
         task = TaskItem.objects.get(pk=pk)
         print(task)
@@ -62,8 +76,12 @@ def task_detail(request, pk):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['PUT'])
 def task_status(request, pk):
+    """
+    *This function updates the task status with a primary key.*
+    *A put request updates a task status and returns the data when the data is valid, otherwise a 400 error.*
+    """
     try:
         task = TaskItem.objects.get(pk=pk)
     except TaskItem.DoesNotExist:
@@ -80,10 +98,11 @@ def task_status(request, pk):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def create_subtask(request):
-    print(request.data)
-    # rel_id = request.data['rel_task']
-    # task = TaskItem.objects.get(pk=rel_id)
-
+    """
+    *This function creates a subtask.*
+    *A Post request creates a subtask with the data when valid and returns the data and a 201 status.*
+    *Invalid data returns a 400 error*
+    """
     serializer = SubtaskSerializer(data=request.data, many=True)
     if serializer.is_valid(raise_exception=True):
         serializer.save()
@@ -94,7 +113,10 @@ def create_subtask(request):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def check_subtask(request, pk):
-    print(request.data)
+    """
+    *This function change the subtask checked status with a primary key.*
+    *A put request updates a subtask checked status and returns the data when the data is valid, otherwise a 400 error.*
+    """
     try:
         subtask = SubtaskItem.objects.get(pk=pk)
     except SubtaskItem.DoesNotExist:

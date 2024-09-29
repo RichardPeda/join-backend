@@ -11,11 +11,18 @@ from django.core.exceptions import ObjectDoesNotExist
 User = get_user_model()
 
 class SignupAPIView(CreateAPIView):
+    """
+    *This function register a new user.*
+    """
     serializer_class = SignupSerializer
     permission_classes = [AllowAny]
 
 @api_view(['POST'])
 def delete_guest(request):
+    """
+    *This function deletes a guest user.*
+    *A post request check for a guest user and delete it.
+    """
     try:
         user = User.objects.get(email='demo123456@mail.com', name='guest')
         user.delete()
