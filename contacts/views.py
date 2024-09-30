@@ -20,7 +20,7 @@ def get_contacts(request):
     contacts = Contact.objects.all()
     serializer = ContactSerializer(contacts, many=True)
     if serializer.data:
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     else:
         return Response({'status': 'no item found'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -34,7 +34,6 @@ def create_contact(request):
     *If the contact is successfully created, the function returns a 201 status.*
     *If the contact clouldn´t be created, the function returns a 400 error.*
     """
-    print(request.data)
     serializer = ContactSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -58,12 +57,12 @@ def contact_detail(request, pk):
     
     if request.method == 'GET':
         serializer = ContactSerializer(contact)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     elif request.method == 'PUT':
         serializer = ContactSerializer(contact, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'DELETE':
         contact.delete()

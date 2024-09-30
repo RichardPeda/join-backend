@@ -19,7 +19,7 @@ def get_tasks(request):
     taskitems = TaskItem.objects.all()
     serializer = TaskitemSerializer(taskitems, many=True)
     if serializer.data:
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     else:
         return Response({'status': 'no item found'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -29,7 +29,7 @@ def get_tasks(request):
 def create_task(request):
     """
     *This function creates a new task.*
-    *A post request creates a new task and returns a the data and a 204 status.*
+    *A post request creates a new task and returns the data and a 201 status.*
     *When the task couldn´t be created a 400 status is returned.*
     """
     print(request.data)
@@ -63,7 +63,7 @@ def task_detail(request, pk):
         serializer = TaskitemSerializer(task, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'DELETE':
         task.delete()
