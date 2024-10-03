@@ -32,7 +32,6 @@ def create_task(request):
     *A post request creates a new task and returns the data and a 201 status.*
     *When the task couldn´t be created a 400 status is returned.*
     """
-    print(request.data)
     serializer = TaskitemSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
         serializer.save()
@@ -51,7 +50,6 @@ def task_detail(request, pk):
     """
     try:
         task = TaskItem.objects.get(pk=pk)
-        print(task)
     except TaskItem.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     
@@ -59,7 +57,6 @@ def task_detail(request, pk):
         serializer = TaskitemSerializer(task)
         return Response(serializer.data)
     elif request.method == 'PUT':
-        print(request.data)
         serializer = TaskitemSerializer(task, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -68,8 +65,6 @@ def task_detail(request, pk):
     elif request.method == 'DELETE':
         task.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-    print(request.data)
     serializer = TaskitemSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -129,21 +124,3 @@ def check_subtask(request, pk):
             return Response(serializer.data)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-
-
-
-
-
-
-
-
-# class TaskitemDetailView(APIView):
-#     def get(self, request, id=None):
-#         print(id)
-#         task = TaskItem.objects.filter(id=id)
-#         if task:
-#             task_serializer = TaskitemSerializer(task, many=True)
-#             return Response(task_serializer.data)
-#         else:
-#             # return Response({'error': 'no item'})
-#             return Response({'status': 'no item found'}, status=status.HTTP_404_NOT_FOUND)

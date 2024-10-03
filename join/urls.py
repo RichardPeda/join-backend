@@ -10,7 +10,6 @@ from rest_framework.authtoken.views import obtain_auth_token
 from users.views import SignupAPIView, delete_guest
 
 urlpatterns = [
-    # path('', include(router.urls)),
     path('admin/', admin.site.urls),
     path('api/signup/', SignupAPIView.as_view(), name='signup_api_view'),
     path('api/login/', LoginView.as_view()),
